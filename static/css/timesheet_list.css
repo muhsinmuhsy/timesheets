@@ -1,0 +1,212 @@
+
+    .timesheet_list-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="date"] {
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        width: 200px;
+    }
+
+    .filter input[type="submit"] {
+        padding: 10px 20px;
+        background-color: rgb(15, 95, 124);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        float: right;
+        margin: 7px;
+    }
+
+    .filter input[type="submit"]:hover {
+        background-color: skyblue;
+    }
+
+    .excel input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        float: right;
+        margin: 7px;
+    }
+
+    .excel input[type="submit"]:hover {
+        background-color: #6cbe70;
+    }
+
+    /****************************** Employee **************/ 
+    .head-img img{
+        width: 113px;
+        height: 43px;
+        animation: pulse 7s infinite;
+        /* margin-bottom: 1px;
+        margin-left: 10px; */
+        margin: 10px;
+        
+    }
+    
+    @media (max-width: 992px) {
+        .head-img img{
+            width: 113px;
+            margin: 6px;
+        }
+    }
+
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style for the tabs */
+.tabs {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.tab {
+    flex-basis: 31%; /* Decreased from 30% to 20% */
+    text-align: center;
+}
+
+.tab a {
+    display: block;
+    padding: 8px; /* Decreased from 10px to 8px */
+    background-color: #f2f2f2;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease;
+    font-size: 14px; /* Added font size */
+}
+
+.tab a:hover {
+    background-color: #ddd;
+}
+
+.tab.is-active a {
+    background-color: #666;
+    color: #fff;
+}
+
+/* Style for the pages */
+.pages {
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    display: none;
+    padding: 20px;
+}
+
+.page.is-active {
+    display: block;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+.page h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.page p {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.timesheet-emp-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 20px; */
+}
+
+.timesheet-emp-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timesheet-emp-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.timesheet-emp-form input[type="date"] {
+    /* padding: 8px; */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.timesheet-emp-form input[type="submit"] {
+    padding: 5px 80px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.timesheet-emp-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+
+.creat-ts{
+    
+    text-align: -webkit-right;
+    margin-bottom: 7px;
+    margin-right: 3px;
+}
+
+
+.creat-ts a{
+    
+    font-family: emoji;
+}
+
+@media (max-width: 767px) {
+    .creat-ts a{
+        font-size: 12px;
+     
+    }
+}

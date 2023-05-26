@@ -1,0 +1,232 @@
+<!------ Time sheet list ------------>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time sheet list</title>
+</head>
+<body>
+    <!-- timesheet_list.html -->
+    {% if request.user.is_superuser %}
+    <!-- Admin view: list all timesheets -->
+    <h1>Admin Timesheet List</h1>
+    <form method="GET">
+        <label for="employee">Select Employee:</label>
+    <select name="employee" id="employee">
+        <option value="">All</option>
+        {% for emp in employees %}
+            <option value="{{ emp.user.id }}" {% if request.GET.employee|stringformat:"s" == emp.user.id|stringformat:"s" %}selected{% endif %}>{{ emp.user.first_name }} {{ emp.user.last_name }}</option>
+        {% endfor %}
+    </select>
+        <br>
+        <label for="project">Project:</label>
+    <select name="project" id="project">
+        <option value="">All</option>
+        {% for proj in projects %}
+            <option value="{{ proj.id }}" {% if request.GET.project|stringformat:"s" == proj.id|stringformat:"s" %}selected{% endif %}>{{ proj.project_name }}</option>
+        {% endfor %}
+    </select>
+        <br>
+        <div>
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                <option value="">All</option>
+                <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+            </select>
+        </div>
+        <br>
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+        <br>
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+        <br>
+        <input type="submit" value="Filter">
+        <br>
+        <input type="submit" name="export" value="Export to Excel">
+    </form>
+    
+    <ul>
+        {% for timesheet in timesheets %}
+        <li>
+            {{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }} - 
+            {{ timesheet.date }} - from {{ timesheet.start_time }} to {{ timesheet.end_time }} - 
+            {{ timesheet.project }} - {{timesheet.location}} - {{timesheet.location}} - {{timesheet.type }} - 
+            {{timesheet.type2 }} - {{timesheet.description}} - {{ timesheet.status }}
+            - Duration: {{ timesheet.duration }} hrs
+            <a href="{% url 'update-timesheet-status' timesheet.pk %}">Update Status</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <!-- Employee view: list only approved timesheets -->
+    <!-- Employee view: list only approved timesheets -->
+<h1>Employee Timesheet List</h1>
+
+<form method="GET">
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+    <br>
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+    <br>
+    <input type="submit" value="Filter">
+</form>
+
+<h2>Approved Timesheets</h2>
+<ul>
+    {% for timesheet in approved_timesheets %}
+        <li>
+            {{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }} - 
+            {{ timesheet.date }} - from {{ timesheet.start_time }} to {{ timesheet.end_time }} - 
+            {{ timesheet.project }} - {{timesheet.location}} - {{timesheet.location}} - {{timesheet.type }} - 
+            {{timesheet.type2 }} - {{timesheet.description}} - {{ timesheet.status }}
+            - Duration: {{ timesheet.duration }} hrs
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Pending Timesheets</h2>
+<ul>
+    {% for timesheet in pending_timesheets %}
+        <li>
+            {{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }} - 
+            {{ timesheet.date }} - from {{ timesheet.start_time }} to {{ timesheet.end_time }} - 
+            {{ timesheet.project }} - {{timesheet.location}} - {{timesheet.location}} - {{timesheet.type }} - 
+            {{timesheet.type2 }} - {{timesheet.description}} - {{ timesheet.status }}
+            - Duration: {{ timesheet.duration }} hrs
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Rejected Timesheets</h2>
+<ul>
+    {% for timesheet in rejected_timesheets %}
+        <li>
+            {{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }} - 
+            {{ timesheet.date }} - from {{ timesheet.start_time }} to {{ timesheet.end_time }} - 
+            {{ timesheet.project }} - {{timesheet.location}} - {{timesheet.location}} - {{timesheet.type }} - 
+            {{timesheet.type2 }} - {{timesheet.description}} - {{ timesheet.status }}
+            - Duration: {{ timesheet.duration }} hrs
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Add link for creating a new timesheet -->
+<a href="{% url 'create-timesheet' %}">Create Timesheet</a>
+
+    {% endif %}
+
+</body>
+</html>
+
+
+
+<div class="for-main">
+    <ul class="tabs">
+        <li class="tab is-active">
+            <a data-switcher data-tab="1">Approved</a>
+        </li>
+        <li class="tab">
+            <a data-switcher data-tab="2">Pending</a>
+        </li>
+        <li class="tab">
+            <a data-switcher data-tab="3">Regected</a>
+        </li>
+    </ul>
+</div>
+
+<main>
+    <section class="pages">
+        <div class="page is-active" data-page="1">
+            <h2>Approved</h2>
+            <p>Welcome</p>
+        </div>
+        <div class="page" data-page="2">
+            <h2>Page 2</h2>
+            <p>Welcome </p>
+        </div>
+        <div class="page" data-page="3">
+            <h2>Page 3</h2>
+            <p>Welcome </p>
+        </div>
+        
+    </section>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Timesheet</title>
+</head>
+<body>
+    <h1>Create Timesheet</h1>
+    <div class="create-timesheet">
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                {{ date|default:date.today|date:'d-m-Y' }}
+            </p>
+
+            <label for="start_time">Start Time:</label>
+            <input type="time" name="start_time" id="start_time" required><br>
+
+            <label for="end_time">End Time:</label>
+            <input type="time" name="end_time" id="end_time" required><br>
+
+            <label for="location">Location:</label>
+            <select name="location" id="location">
+                <option value="Office" {% if timesheet.location == 'Office' %}selected{% endif %}>Office</option>
+                <option value="Work From Home" {% if timesheet.location == 'Work From Home' %}selected{% endif %}>Work From Home</option>
+            </select><br>
+            
+            <label for="type">type:</label>
+            <select name="type" id="type">
+                <option value="New" {% if timesheet.type == 'New' %}selected{% endif %}>New</option>
+                <option value="Rework" {% if timesheet.type == 'Rework' %}selected{% endif %}>Rework</option>
+                <option value="Edit" {% if timesheet.type == 'Edit' %}selected{% endif %}>Edit</option>
+            </select><br>
+
+
+            <label for="type2">type2:</label>
+            <select name="type2" id="type2">
+                <option value="Other" {% if timesheet.type2 == 'Other' %}selected{% endif %}>Other</option>
+                <option value="Poster" {% if timesheet.type2 == 'Poster' %}selected{% endif %}>Poster</option>
+                <option value="Video" {% if timesheet.type2 == 'Video' %}selected{% endif %}>Video</option>
+                <option value="Branding" {% if timesheet.type2 == 'Branding' %}selected{% endif %}>Branding</option>
+                <option value="Brochure" {% if timesheet.type2 == 'Brochure' %}selected{% endif %}>Brochure</option>
+                <option value="Packaging" {% if timesheet.type2 == 'Packaging' %}selected{% endif %}>Packaging</option>
+                <option value="Developing" {% if timesheet.type2 == 'Developing' %}selected{% endif %}>Developing</option>
+            </select><br>
+
+            <label for="project">Project:</label>
+            <select name="project" id="project">
+                {% for project in projects %}
+                    <option value="{{ project.id }}">{{ project.project_name }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="description">description:</label>
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
+

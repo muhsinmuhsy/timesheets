@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if request.user.is_superuser %}
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+                <span class="bi bi-list" id="menu-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                    </li>
+                </ul>
+
+                <!-- New ul element -->
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i></a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--- Nav end ---->
+
+    <h1 class="text-center qq">Timesheets</h1>
+    <!-- select form -->
+    <div class="timesheet_list-form">
+        <form method="GET">
+            <label for="employee">Select Employee:</label>
+        <select name="employee" id="employee">
+            <option value="">All</option>
+            {% for emp in employees %}
+                <option value="{{ emp.user.id }}" {% if request.GET.employee|stringformat:"s" == emp.user.id|stringformat:"s" %}selected{% endif %}>{{ emp.user.first_name }} {{ emp.user.last_name }}</option>
+            {% endfor %}
+        </select>
+            <br>
+            <label for="project">Project:</label>
+        <select name="project" id="project">
+            <option value="">All</option>
+            {% for proj in projects %}
+                <option value="{{ proj.id }}" {% if request.GET.project|stringformat:"s" == proj.id|stringformat:"s" %}selected{% endif %}>{{ proj.project_name }}</option>
+            {% endfor %}
+        </select>
+            <br>
+            <div>
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    <option value="">All</option>
+                    <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                    <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+                </select>
+            </div>
+            <br>
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+            <br>
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+            <br>
+            <div class="filter">
+            <input type="submit" value="Filter" >
+            </div>
+            <div class="excel">
+                <input type="submit" name="export" value="Export to Excel" onclick="return confirm('Do you Want to Download this sheet as Excel ?')">
+            </div>
+            
+        </form>
+    </div>
+    <!-- lists -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col" class="table-primary text-nowrap">Member Name</th>
+                    <th scope="col" class="table-secondary text-nowrap">Date</th>
+                    <th scope="col" class="table-success text-nowrap">Project</th>
+                    <th scope="col" class="table-dark text-nowrap">Time</th>
+                    <th scope="col" class="table-light text-nowrap">Location</th>
+                    <th scope="col" class="table-warning text-nowrap">type</th>
+                    <th scope="col" class="table-info text-nowrap">type2</th>
+                    <th scope="col" class="table-light text-nowrap">Description</th>
+                    <th scope="col" class="table-dark text-nowrap">Durection</th>
+                    <th scope="col" class="table-warning text-nowrap">status</th>
+                    <th scope="col" class="table-danger text-nowrap">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for timesheet in timesheets %}
+                    <tr class="text-center">
+                        <td  class="table-primary text-nowrap">{{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
+                        <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
+                        <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                        <td  class="table-light text-nowrap">{{timesheet.location}}</td>
+                        <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
+                        <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
+                        <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                        <td  class="table-warning text-nowrap">{{ timesheet.status }}</td>
+                        <td  class="table-danger text-nowrap">
+                            <a href="{% url 'update-timesheet-status' timesheet.pk %}" style="text-decoration: none; ">Update Status</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <nav>
+        <ul>
+        <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+        <li><a href="{% url 'timesheet-list' %}" class="active"><i class="bi bi-alarm-fill"></i></a></li>
+        <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+        <li><a href="{% url 'profile' %}"><i class="bi bi-person-circle"></i></a></li>
+        </ul>
+    </nav>
+    <div class="head-img">
+        <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+    </div>
+    <div class="creat-ts"> 
+        <a href="{% url 'create-timesheet' %}" class="btn btn-primary" >Create Timesheet</a>
+    </div>
+    
+   
+    <div class="for-main">
+        <ul class="tabs">
+            <li class="tab is-active">
+                <a data-switcher data-tab="1">Approved</a>
+            </li>
+            <li class="tab">
+                <a data-switcher data-tab="2">Pending</a>
+            </li>
+            <li class="tab">
+                <a data-switcher data-tab="3">Rejected</a>
+            </li>
+        </ul>
+    </div>
+    
+    <main>
+        <section class="pages">
+            <div class="page is-active" data-page="1">
+                
+                <div class="timesheet-emp-form">
+                    <form method="GET">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+                        
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+                        
+                        <input type="submit" value="Filter">
+                    </form>
+                </div>
+
+                <div class="table-responsive " style="margin: 0px; margin-top: 10px;">
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center">
+                               
+                                <th scope="col" class="table-primary text-nowrap">Date</th>
+                                <th scope="col" class="table-success text-nowrap">Project</th>
+                                <th scope="col" class="table-dark text-nowrap">Time</th>
+                                <th scope="col" class="table-danger text-nowrap">Location</th>
+                                <th scope="col" class="table-warning text-nowrap">type</th>
+                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Description</th>
+                                <th scope="col" class="table-dark text-nowrap">Durection</th>
+                               
+                                
+            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for timesheet in approved_timesheets %}
+                                <tr class="text-center">
+                                    
+                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
+                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    {{ timesheet.status }}
+                                   
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <div class="page" data-page="2">
+                <div class="timesheet-emp-form">
+                    <form method="GET">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+                        
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+                        
+                        <input type="submit" value="Filter">
+                    </form>
+                </div>
+
+                <div class="table-responsive " style="margin: 0px; margin-top: 10px;">
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center">
+                                
+                                <th scope="col" class="table-primary text-nowrap">Date</th>
+                                <th scope="col" class="table-success text-nowrap">Project</th>
+                                <th scope="col" class="table-dark text-nowrap">Time</th>
+                                <th scope="col" class="table-danger text-nowrap">Location</th>
+                                <th scope="col" class="table-warning text-nowrap">type</th>
+                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Description</th>
+                                <th scope="col" class="table-dark text-nowrap">Durection</th>
+                               
+                                
+            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for timesheet in pending_timesheets %}
+                                <tr class="text-center">
+                                    
+                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
+                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    {{ timesheet.status }}
+                                   
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            
+            <div class="page" data-page="3">
+                <div class="timesheet-emp-form">
+                    <form method="GET">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+                        
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+                        
+                        <input type="submit" value="Filter">
+                    </form>
+                </div>
+
+                <div class="table-responsive " style="margin: 0px; margin-top: 10px;">
+                    <table class="table">
+                        <thead>
+                            <tr class="text-center">
+                               
+                                <th scope="col" class="table-primary text-nowrap">Date</th>
+                                <th scope="col" class="table-success text-nowrap">Project</th>
+                                <th scope="col" class="table-dark text-nowrap">Time</th>
+                                <th scope="col" class="table-danger text-nowrap">Location</th>
+                                <th scope="col" class="table-warning text-nowrap">type</th>
+                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Description</th>
+                                <th scope="col" class="table-dark text-nowrap">Durection</th>
+                               
+                                
+            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for timesheet in rejected_timesheets %}
+                                <tr class="text-center">
+                                    
+                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
+                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    {{ timesheet.status }}
+                                   
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <style>
+        .pages .page {
+            display: none;
+        }
+
+        .pages .page.is-active {
+            display: block;
+            margin: 3px;
+        }
+        .table-responsive{
+            margin-top: 20px;
+           
+        }
+    </style>
+{% endif %}
+
+{% endblock content %}

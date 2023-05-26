@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<nav>
+    <ul>
+    <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+    <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+    <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+    <li><a href="{% url 'profile' %}" class="active"><i class="bi bi-person-circle"></i></a></li>
+    </ul>
+</nav>
+<header>
+    <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+</header>
+
+<div class="emp-user-edit">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+       
+        <label for="employees_photo">Photo:</label>
+        <div class="file-input">
+            <input type="file" id="employees_photo" name="employees_photo" class="visually-hidden" onchange="previewPhoto(this)">
+            <label for="employees_photo" class="custom-file-label">Choose Photo</label>
+        </div>
+        <div id="photo-preview"></div>
+
+        
+
+        <input type="submit" value="Edit">
+    </form>
+    <br>
+    <br>
+</div>
+
+<style>
+    .emp-user-edit {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .file-input {
+        margin-bottom: 20px;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4e73df;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .custom-file-label:hover {
+        background-color: #375ab5;
+    }
+
+    #photo-preview {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #photo-preview img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    input[type="submit"] {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4e73df;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #375ab5;
+    }
+</style>
+
+
+<script>
+    function previewPhoto(input) {
+        var previewContainer = document.getElementById('photo-preview');
+        var file = input.files[0];
+        
+        if (file) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                previewContainer.innerHTML = '';
+                previewContainer.appendChild(imgElement);
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.innerHTML = '';
+        }
+    }
+    </script>
+{% endblock %}

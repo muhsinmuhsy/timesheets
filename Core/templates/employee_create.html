@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+            <span class="bi bi-list" id="menu-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav text-center ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                </li>
+            </ul>
+
+            <!-- New ul element -->
+            <ul class="navbar-nav text-center ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i></a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- end nav -->
+
+<h1 class="text-center qq">Create Member</h1>
+
+<div class="emp-create">
+    {% for msg in messages %}
+    {{ msg }}
+    {% endfor %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+    
+        <input type="text" id="username" name="username" placeholder="User Name" class="form-control">
+        
+        
+        <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+        
+    
+        <input type="text" id="first_name" name="first_name" placeholder="Fiest Name" class="form-control">
+        
+    
+        <input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control">
+        
+       
+        <input type="file" id="employees_photo" name="employees_photo" class="form-control">
+
+        <input type="text" id="employees_job" name="employees_job" placeholder="job" class="form-control">
+        
+        
+        <input type="text" id="employees_number" name="employees_number" placeholder="Mobile Number" class="form-control">
+
+ 
+        <input type="email" id="employee_email" name="employee_email" placeholder="Email" class="form-control">
+        
+       
+        <input type="text" id="employees_address" name="employees_address" placeholder="Address" class="form-control">
+        
+        <input type="submit" value="Create Member">
+    </form>
+</div>
+{% endblock content %}

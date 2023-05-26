@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if request.user.is_superuser %}
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+                <span class="bi bi-list" id="menu-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                    </li>
+                </ul>
+
+                <!-- New ul element -->
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i></a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- end nav -->
+
+    
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="employee mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              {% if employee.employees_photo %}
+                <img src="{{ employee.employees_photo.url }}" alt="Employee Photo" class="img-fluid">
+              {% else %}
+                <img src="{% static 'img/profile/default.jpg' %}" alt="Default Photo" class="img-fluid">
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <div class="employee-body text-center">
+                <h5 class="employee-title">{{ employee.user.first_name }} {{ employee.user.last_name }}</h5>
+                <p class="employee-text-job"> {{ employee.employees_job }}</p>
+                <p class="employee-text"><i class="bi bi-phone-fill"></i> {{ employee.employees_number }}</p>
+                <p class="employee-text"><i class="bi bi-envelope-at-fill"></i> {{ employee.employee_email}}</p>
+                <p class="employee-text"><i class="bi bi-geo"></i> {{ employee.employees_address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+      
+      
+
+{% else %}
+
+<style>
+    body {
+        
+        margin: 0;
+        background-color: #f5f5f5;
+    }
+
+    
+
+    .profile-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .employee-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        cursor: pointer;
+    }
+
+    .profile-details {
+        text-align: center;
+    }
+
+    .employee-name {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+    }
+
+    .job-title {
+        font-size: 18px;
+        color: #666;
+        margin: 0;
+    }
+
+    .employee-number,
+    .employee-email,
+    .employee-address {
+        font-size: 14px;
+        color: #888;
+        margin: 0;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-image {
+        max-width: 80%;
+        max-height: 80%;
+        border-radius: 5px;
+    }
+</style>
+
+<nav>
+    <ul>
+        <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+        <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+        <li><a href="{% url 'employee-list' %}" class="active"><i class="bi bi-people-fill"></i></a></li>
+        <li><a href="{% url 'profile' %}"><i class="bi bi-person-circle"></i></a></li>
+    </ul>
+</nav>
+
+<header>
+    <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+</header>
+
+<div class="profile-container">
+    <div class="employee-profile">
+        {% if employee.employees_photo %}
+            <img class="profile-image" src="{{ employee.employees_photo.url }}" alt="">
+        {% else %}
+            <img class="profile-image" src="{% static 'img/profile/default.jpg' %}" alt="">
+        {% endif %}
+        <div class="profile-details">
+            <p class="employee-name">{{ employee.user.first_name }} {{ employee.user.last_name }}</p>
+            <p class="job-title"> {{ employee.employees_job }}</p>
+            <p class="employee-number"><i class="bi bi-phone-fill"></i> {{ employee.employees_number }}</p>
+            <p class="employee-email"><i class="bi bi-envelope-at-fill"></i> {{ employee.employee_email }}</p>
+            <p class="employee-address"><i class="bi bi-geo"></i> {{ employee.employees_address }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay">
+    <img class="modal-image" src="" alt="">
+</div>
+
+<script>
+    const profileImage = document.querySelector('.profile-image');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const modalImage = document.querySelector('.modal-image');
+
+    profileImage.addEventListener('click', function() {
+        const imageSrc = this.getAttribute('src');
+        modalImage.setAttribute('src', imageSrc);
+        modalOverlay.style.display = 'flex';
+    });
+
+    modalOverlay.addEventListener('click', function() {
+        modalOverlay.style.display = 'none';
+    });
+</script>
+
+
+
+{% endif %}
+
+
+  
+{% endblock content %}

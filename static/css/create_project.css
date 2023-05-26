@@ -1,0 +1,25 @@
+.back{
+    margin: 10px;
+    font-size: 30px;
+    color: rgb(8, 18, 163);
+}
+.project-form{
+    display: flex;
+    justify-content: center;
+    height: 50vh;
+    align-items: center;
+}
+.project-form .form-control{
+    font-family: math;
+    font-weight: bold;
+    border-color: #5e6c23;
+    
+}
+
+.project-form  .form-control::placeholder {
+    color: black;
+}
+
+.project-form button{
+    margin-left: 120px;
+}

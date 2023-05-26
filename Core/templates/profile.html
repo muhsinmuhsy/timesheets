@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <nav>
+        <ul>
+        <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+        <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+        <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+        <li><a href="{% url 'profile' %}" class="active"><i class="bi bi-person-circle"></i></a></li>
+        </ul>
+    </nav>
+    <header>
+        <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+    </header>
+
+    <div class="profile-container">
+        {% if employee.employees_photo %}
+            <img src="{{ employee.employees_photo.url }}" alt="Employee Photo" class="profile-photo">
+        {% else %}
+            <img src="{% static 'img/profile/default.jpg' %}" alt="Default Photo" class="profile-photo">
+        {% endif %}
+        <br>
+        <a href="{% url 'profilephoto' employee.pk %}"><i class="bi bi-pencil-square"></i></a>
+        <div class="profile-details">
+            <h1>{{ request.user.first_name }} {{ request.user.last_name }}</h1>
+            <p style="    font-family: monospace"><strong>{{ employee.employees_job }}</strong> </p>
+            <p><strong><i class="bi bi-phone-fill" style="color: blue;"></i></strong> {{ employee.employees_number }}</p>
+            <p><strong><i class="bi bi-envelope-at-fill" style="color: orange;"></i></strong> {{ employee.employee_email }}</p>
+            <p><strong><i class="bi bi-geo" style="color: green;"></i></strong> {{ employee.employees_address }}</p>
+            
+            <div class="profile-actions">
+                <a href="{% url 'profileedit' employee.pk %}" class="btn btn-primary"> Edit</a>
+                <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+                <br>
+                <a href="{% url 'logout' %}" style="margin-top: 10px;" onclick="return confirm('Do you want to logout this page?')" class="btn btn-danger">Logout</a>
+                
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Custom CSS styles */
+        .profile-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .profile-details p {
+            margin-bottom: 10px;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+        }
+        
+    </style>
+
+
+{% endblock content %}

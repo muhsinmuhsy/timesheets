@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+                <span class="bi bi-list" id="menu-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                    </li>
+                </ul>
+
+                <!-- New ul element -->
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i></a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="back">
+        <a href="{% url 'project-list' %}">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    </div>
+    <div class="head">
+        <h1>
+            Create project
+        </h1>
+    </div>
+
+    <div class="project-form ">
+        <form method="post">
+            {% csrf_token %}
+            
+            <input type="text" id="project_name" name="project_name" required placeholder="Project Name" class="form-control text-center">
+            <br>
+            
+            <input type="text" id="project_client_name" name="project_client_name" required placeholder="Client Name" class="form-control text-center">
+            <br>
+            
+            <input type="text" id="project_client_number" name="project_client_number" placeholder="Client Number" class="form-control text-center">
+            <br>
+            
+            <input type="text" id="project_client_address" name="project_client_address" placeholder="Client Address" class="form-control text-center">
+            <br>
+
+            <button class="btn btn-primary " type="submit">Create Project</button>
+        </form>
+    </div>
+{% endblock content %}

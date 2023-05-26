@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<nav>
+    <ul>
+    <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+    <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+    <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+    <li><a href="{% url 'profile' %}" class="active"><i class="bi bi-person-circle"></i></a></li>
+    </ul>
+</nav>
+<header>
+    <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+</header>
+
+<div class="emp-user-edit">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- <label for="employees_photo">Photo:</label>
+        <div class="file-input">
+            <input type="file" id="employees_photo" name="employees_photo"  class="visually-hidden" onchange="previewPhoto(this)">
+            <label for="employees_photo" class="custom-file-label">Choose Photo</label>
+        </div>
+        <div id="photo-preview">
+            {% if employee.employees_photo %}
+                <img src="{{ employee.employees_photo.url }}" value="{{ employee.employees_employees_photo }}" alt="Current Photo">
+            {% endif %}
+        </div> -->
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ employee.user.username }}">
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ employee.user.first_name }}">
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ employee.user.last_name }}">
+
+        <label for="employees_job">Job:</label>
+       
+        <input type="text" id="employees_job" name="employees_job" value="{{ employee.employees_job }}">
+
+       
+
+        <label for="employees_number">Number:</label>
+        <input type="text" id="employees_number" name="employees_number" value="{{ employee.employees_number }}">
+
+        <label for="employee_email">Email:</label>
+        <input type="text" id="employee_email" name="employee_email" value="{{ employee.employee_email }}">
+
+        <label for="employees_address">Address:</label>
+        <input type="text" id="employees_address" name="employees_address" value="{{ employee.employees_address }}">
+
+        <input type="submit" value="Edit">
+    </form>
+    <br>
+    <br>
+</div>
+
+
+<style>
+    .emp-user-edit {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .emp-user-edit form {
+        display: grid;
+        gap: 10px;
+    }
+
+    .emp-user-edit label {
+        font-weight: bold;
+    }
+
+    .emp-user-edit input[type="text"],
+    .emp-user-edit input[type="file"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .emp-user-edit input[type="submit"] {
+        padding: 10px;
+        background-color: #3897f0;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .emp-user-edit input[type="submit"]:hover {
+        background-color: #1873c3;
+    }
+    
+
+</style>
+<!-- <script>
+function previewPhoto(input) {
+    var previewContainer = document.getElementById('photo-preview');
+    var file = input.files[0];
+    
+    if (file) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            var imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(imgElement);
+        };
+        
+        reader.readAsDataURL(file);
+    } else {
+        previewContainer.innerHTML = '';
+    }
+}
+</script> -->
+
+{% endblock %}

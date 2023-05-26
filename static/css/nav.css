@@ -1,0 +1,106 @@
+/* Custom CSS to show the menu from the right side */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 65px;
+        right: -200px;
+        bottom: 0;
+        left: auto;
+        width: 200px;
+        padding-left: 15px;
+        overflow-y: auto;
+        background-color: rgba(17, 71, 128, 0.71);
+        animation: slideInRight 0.5s forwards;
+    }
+    
+    @keyframes slideInRight {
+        0% {
+            right: -200px;
+        }
+        100% {
+            right: 0;
+        }
+    }
+    
+    .navbar-collapse.hide {
+        animation: slideOutRight 0.5s forwards;
+    }
+    
+    @keyframes slideOutRight {
+        0% {
+            right: 0;
+        }
+        100% {
+            right: -200px;
+        }
+    }
+}
+
+.navbar img{
+    width: 113px;
+    height: 43px;
+    animation: pulse 7s infinite;
+    margin-bottom: 1px;
+    margin-left: 10px;
+}
+
+.navbar{
+    background-color: #5e6c23;
+}
+
+#menu-icon{
+    color: #fff;
+    font-size: 25px;
+}
+
+.navbar-toggler{
+    border: hidden;
+    color: #5e6c23;
+}
+
+.navbar-nav{
+    background-color: #fff;
+    border-radius: 7px;
+    margin: 10px;
+}
+
+.nav-link{
+    color: black;
+    font-weight: bold;
+}
+
+.nav-link:hover{
+    background-color: #5e6c23;
+    color: #fff;
+}
+
+.bi-house-door-fill{
+    color: rgba(138, 70, 33, 0.803);
+}
+
+.nav-item .bi-kanban-fill{
+    color: green;
+}
+
+.nav-item .bi-people-fill{
+    color: blue;
+}
+
+.nav-item .bi-alarm-fill{
+    color: rgb(240, 91, 10);
+}
+
+.nav-item .bi-person-circle{
+    color: rgb(4, 43, 121);
+    font-size: 25px;
+}
+
+.nav-item .bi-power{
+    color: red;
+    font-size: 25px;
+}
+
+.nav-item.active .nav-link {
+    background-color: #5e6c23;
+    color: #fff;
+}

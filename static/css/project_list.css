@@ -1,0 +1,29 @@
+
+.table-responsive {
+    border-radius: 6px;
+    margin: 10px;
+}
+
+.head{
+    text-align: center;
+    /* border-style: double; */
+    margin: 10px;
+    /* border-bottom-style:dashed ; */
+    font-family: inherit;
+
+}
+.table-delete{
+    color: red;
+}
+
+.create-project{
+    text-align: -webkit-right;
+    margin: 10px;
+}
+
+.create-project a{
+    color: white;
+    text-decoration: none;
+    font-family: emoji;
+}
+

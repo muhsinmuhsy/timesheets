@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<nav>
+    <ul>
+      <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+      <li><a href="{% url 'timesheet-list' %}" class="active"><i class="bi bi-alarm-fill"></i></a></li>
+      <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+      <li><a href="{% url 'profile' %}"><i class="bi bi-person-circle"></i></a></li>
+    </ul>
+</nav>
+<header>
+    <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+</header>
+
+
+<div class="create-timesheet">
+    <form method="post">
+        {% csrf_token %}
+        <p style="font-family: fantasy;">
+            {{ date|default:date.today|date:'d-m-Y' }}
+        </p>
+
+        <label for="start_time">Start Time</label>
+        <input type="time" name="start_time" id="start_time" required>
+
+        <label for="end_time">End Time</label>
+        <input type="time" name="end_time" id="end_time" required>
+
+        <label for="location">Location</label>
+        <select name="location" id="location">
+            <option value="Office" {% if timesheet.location == 'Office' %}selected{% endif %}>Office</option>
+            <option value="Work From Home" {% if timesheet.location == 'Work From Home' %}selected{% endif %}>Work From Home</option>
+        </select>
+
+        <label for="type">Type</label>
+        <select name="type" id="type">
+            <option value="New" {% if timesheet.type == 'New' %}selected{% endif %}>New</option>
+            <option value="Rework" {% if timesheet.type == 'Rework' %}selected{% endif %}>Rework</option>
+            <option value="Edit" {% if timesheet.type == 'Edit' %}selected{% endif %}>Edit</option>
+        </select>
+
+        <label for="type2">Type2:</label>
+        <select name="type2" id="type2">
+            <option value="Other" {% if timesheet.type2 == 'Other' %}selected{% endif %}>Other</option>
+            <option value="Poster" {% if timesheet.type2 == 'Poster' %}selected{% endif %}>Poster</option>
+            <option value="Video" {% if timesheet.type2 == 'Video' %}selected{% endif %}>Video</option>
+            <option value="Branding" {% if timesheet.type2 == 'Branding' %}selected{% endif %}>Branding</option>
+            <option value="Brochure" {% if timesheet.type2 == 'Brochure' %}selected{% endif %}>Brochure</option>
+            <option value="Packaging" {% if timesheet.type2 == 'Packaging' %}selected{% endif %}>Packaging</option>
+            <option value="Developing" {% if timesheet.type2 == 'Developing' %}selected{% endif %}>Developing</option>
+        </select>
+
+        <label for="project">Project</label>
+        <select name="project" id="project" required>
+            {% for project in projects %}
+            <option value="{{ project.id }}">{{ project.project_name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
+        <input type="submit" value="Create Timesheet">
+    </form>
+</div>
+<style>
+    /* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.create-timesheet {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-bottom: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+@media (max-width: 767px) {
+    label {
+        font-size: 12px;
+    }
+    input[type="time"],
+    select,
+    textarea {
+    font-size: 15px;
+}
+}
+input[type="time"],
+select,
+textarea {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+input[type="submit"] {
+    padding: 8px 20px;
+    background-color: #3897f0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #1873c3;
+}
+
+</style>
+{% endblock content %}

@@ -1,0 +1,360 @@
+<!-------------- Create timesheet ------------------>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Timesheet</title>
+</head>
+<body>
+    <h1>Create Timesheet</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            {{ date|default:date.today|date:'d-m-Y' }}
+        </p>
+
+        <label for="start_time">Start Time:</label>
+        <input type="time" name="start_time" id="start_time" required><br>
+
+        <label for="end_time">End Time:</label>
+        <input type="time" name="end_time" id="end_time" required><br>
+
+        <label for="location">Location:</label>
+        <select name="location" id="location">
+            <option value="Office" {% if timesheet.location == 'Office' %}selected{% endif %}>Office</option>
+            <option value="Work From Home" {% if timesheet.location == 'Work From Home' %}selected{% endif %}>Work From Home</option>
+        </select><br>
+        
+        <label for="type">type:</label>
+        <select name="type" id="type">
+            <option value="New" {% if timesheet.type == 'New' %}selected{% endif %}>New</option>
+            <option value="Rework" {% if timesheet.type == 'Rework' %}selected{% endif %}>Rework</option>
+            <option value="Edit" {% if timesheet.type == 'Edit' %}selected{% endif %}>Edit</option>
+        </select><br>
+
+
+        <label for="type2">type2:</label>
+        <select name="type2" id="type2">
+            <option value="Other" {% if timesheet.type2 == 'Other' %}selected{% endif %}>Other</option>
+            <option value="Poster" {% if timesheet.type2 == 'Poster' %}selected{% endif %}>Poster</option>
+            <option value="Video" {% if timesheet.type2 == 'Video' %}selected{% endif %}>Video</option>
+            <option value="Branding" {% if timesheet.type2 == 'Branding' %}selected{% endif %}>Branding</option>
+            <option value="Brochure" {% if timesheet.type2 == 'Brochure' %}selected{% endif %}>Brochure</option>
+            <option value="Packaging" {% if timesheet.type2 == 'Packaging' %}selected{% endif %}>Packaging</option>
+            <option value="Developing" {% if timesheet.type2 == 'Developing' %}selected{% endif %}>Developing</option>
+        </select><br>
+
+        <label for="project">Project:</label>
+        <select name="project" id="project">
+            {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.project_name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="description">description:</label>
+        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+<!--- update_timesheet_staus-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Timesheet Status</title>
+</head>
+<body>
+    <h1>Update Timesheet Status</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="Pending" {% if timesheet.status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Rejected" {% if timesheet.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+            <option value="Approved" {% if timesheet.status == 'Approved' %}selected{% endif %}>Approved</option>
+        </select><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+<!-- employee create -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Employee</title>
+</head>
+<body>
+    <h1>Create New Employee</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name"><br><br>
+        
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name"><br><br>
+        
+        <label for="employees_photo">Photo:</label>
+        <input type="file" id="employees_photo" name="employees_photo"><br><br>
+
+        <label for="employees_job">Job:</label>
+        <input type="text" id="employees_job" name="employees_job"><br><br>
+        
+        <label for="employees_number">Number:</label>
+        <input type="text" id="employees_number" name="employees_number"><br><br>
+
+        <label for="employee_email">Email:</label>
+        <input type="email" id="employee_email" name="employee_email"><br><br>
+        
+        <label for="employees_address">Address:</label>
+        <input type="text" id="employees_address" name="employees_address"><br><br>
+        
+        <input type="submit" value="Create Employee">
+    </form>
+</body>
+</html>
+<!-----------------employee update------------------->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+</head>
+<body>
+    <h1>Update Employee</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ employee.user.username }}"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ employee.user.first_name }}"><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ employee.user.last_name }}"><br><br>
+
+        <label for="employees_job">Job:</label>
+       
+        <input type="text" id="employees_job" name="employees_job" value="{{ employee.employees_job }}"><br><br>
+
+        <label for="employees_photo">Photo:</label>
+        <input type="file" id="employees_photo" name="employees_photo"><br><br>
+
+        <label for="employees_number">Number:</label>
+        <input type="text" id="employees_number" name="employees_number" value="{{ employee.employees_number }}"><br><br>
+
+        <label for="employee_email">Email:</label>
+        <input type="text" id="employee_email" name="employee_email" value="{{ employee.employee_email }}"><br><br>
+
+        <label for="employees_address">Address:</label>
+        <input type="text" id="employees_address" name="employees_address" value="{{ employee.employees_address }}"><br><br>
+
+        <input type="submit" value="Update Employee">
+    </form>
+</body>
+</html>
+
+
+<!----------------- employee details ------------------------------->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{ employee.user.first_name }} {{ employee.user.last_name }}</h1>
+    
+    <p>
+        {% if employee.employees_photo %}
+            {{ employee.employees_photo }}
+            <img src="{{ employee.employees_photo.url }}" alt="">
+        {% else %}
+            <img src="{% static 'img/profile/user.png' %}" alt="">
+        {% endif %}
+    </p>
+    <p>Employee job: {{ employee.employees_job }}</p>
+    <p>Employee Number: {{ employee.employees_number }}</p>
+    <p>Employee Address: {{ employee.employees_address }}</p>
+
+</body>
+</html>
+
+<!------------------------------- employee_list ---------------------------->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+    {% if request.user.is_superuser %}
+        <h1>Employee List</h1>
+        <ul>
+            {% for employee in employees %}
+                <li>{{ employee.user.first_name }} {{ employee.user.last_name }}</li>
+                <li>Employee job: {{ employee.employees_job }}</li>
+                <li>Employee Number: {{ employee.employees_number }}</li>
+                <li>Employee Address: {{ employee.employees_address }}</li>
+                <li>
+                    <a href="{% url 'employee-update' employee.pk %}">Edit</a>
+                    <a href="{% url 'employee-delete' employee.pk %}">Delete</a>
+                </li>
+                <br>
+            {% empty %}
+                <li>No employees available</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'employee-create' %}">Create New Employee</a>
+    {% else %}
+        <h1>Employee List</h1>
+        <ul>
+            {% for employee in employees %}
+                <li>{{ employee.user.first_name }} {{ employee.user.last_name }}</li>
+                <li>Employee job: {{ employee.employees_job }}</li>
+                <li>Employee Number: {{ employee.employees_number }}</li>
+                <li>Employee Address: {{ employee.employees_address }}</li>
+                <br>
+            {% empty %}
+                <li>No employees available</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
+
+
+
+<!----------------------- project_crete ---------------------------->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Project</title>
+</head>
+<body>
+    <h1>Create New Project</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="project_name">Project Name:</label>
+        <input type="text" id="project_name" name="project_name" required>
+        <br>
+        <label for="project_client_name">Client Name:</label>
+        <input type="text" id="project_client_name" name="project_client_name" required>
+        <br>
+        <label for="project_client_number">Client Number:</label>
+        <input type="text" id="project_client_number" name="project_client_number" >
+        <br>
+        <label for="project_client_address">Client Address:</label>
+        <input type="text" id="project_client_address" name="project_client_address" >
+        <br>
+        <button type="submit">Create Project</button>
+    </form>
+</body>
+</html>
+
+<!---------------------------------------- project_list.html --------------------------->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project List</title>
+</head>
+<body>
+    <h1>Project List</h1>
+    <ul>
+        {% for project in projects %}
+            <li>{{ project.project_name }}</li>
+            <li>Client Name: {{ project.project_client_name }}</li>
+            <li>Client Number: {{ project.project_client_number }}</li>
+            <li>Client Address: {{ project.project_client_address }}</li>
+            <li>
+                <a href="{% url 'project-update' project.pk %}">Edit</a>
+                <a href="{% url 'project-delete' project.pk %}">Delete</a>
+            </li>
+            <br>
+        {% empty %}
+            <li>No projects available</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'project-create' %}">Create New Project</a>
+</body>
+</html>
+
+
+<!------------------ index.html ------------------------------->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <h4>
+            Welcome, {{ request.user.first_name }} {{ request.user.last_name }}
+        </h4>
+        <p>
+            <a href="{% url 'logout' %}">logout</a>
+        </p>
+        <h1>
+            index
+        </h1>
+        <h6>
+            Employees: {{ employees_count }}
+        </h6>
+        <h6>
+            Projects: {{ project_count }}
+        </h6>
+
+        <p>
+            <a href="{% url 'project-list' %}">project list</a>
+        </p>
+
+        <p>
+            <a href="{% url 'employee-list' %}">employee list</a>
+        </p>
+        <p>
+            <a href="{% url 'timesheet-list' %}">timesheet list</a>
+        </p>
+    {% else %}
+        <h4>
+            Welcome, {{ request.user.first_name }} {{ request.user.last_name }}
+        </h4>
+        <p>
+            <a href="{% url 'logout' %}">logout</a>
+        </p>
+        <p>
+            <a href="{% url 'password_change' %}">Change Password</a>
+
+        </p>
+        <h1>
+            index
+        </h1>
+        <h6>
+            Total Duration Today: {{ total_duration }}
+        </h6>
+        <p>
+            <a href="{% url 'employee-list' %}">employee list</a>
+        </p>
+        <p>
+            <a href="{% url 'timesheet-list' %}">timesheet list</a>
+        </p>
+    {% endif %}
+
+{% endblock content %}

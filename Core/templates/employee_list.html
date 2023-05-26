@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if request.user.is_superuser %}
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+                <span class="bi bi-list" id="menu-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                    </li>
+                </ul>
+
+                <!-- New ul element -->
+                <ul class="navbar-nav text-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i></a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="create-employee">
+        <button class="btn btn-primary">
+            <a href="{% url 'employee-create' %}">Create New Member</a>
+        </button>
+    </div>
+    
+    
+    <div class="container">
+        <div class="chat-list">
+          {% for employee in employees %}
+          
+          <div class="chat-item">
+            {% if employee.employees_photo %}
+            <img src="{{ employee.employees_photo.url }}" alt="Employee Photo" class="chat-item__image">
+            {% else %}
+            <img src="{% static 'img/profile/default.jpg' %}" alt="Default Photo" class="chat-item__image">
+            {% endif %}
+            <a href="{% url 'employee_details' employee.id %}" class="chat-item__details text-center">
+                <div>
+                  <p class="chat-item__name">
+                    {{ employee.user.first_name }} {{ employee.user.last_name }}
+                  </p>
+                  <p class="chat-item__job">{{ employee.employees_job }}</p>
+                </div>
+              </a>
+              
+            <div class="chat-item__actions text-center">
+              <a href="{% url 'employee-update' employee.pk %}" class="chat-item__action"><i class="bi bi-pencil-square"></i></a>
+              <a href="{% url 'employee-delete' employee.pk %}" class="chat-item__action"  onclick="return confirm('Are you sure you want to delete this ?')">
+                <i class="bi bi-trash3-fill table-delete"></i>
+            </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+    </div>
+{% else %}   
+    <nav>
+        <ul>
+        <li><a href="{% url 'index' %}" ><i class="bi bi-house-fill"></i></a></li>
+        <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+        <li><a href="{% url 'employee-list' %}" class="active"><i class="bi bi-people-fill"></i></a></li>
+        <li><a href="{% url 'profile' %}" ><i class="bi bi-person-circle"></i></a></li>
+        </ul>
+    </nav>
+    <header>
+        <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+    </header>
+    <div class="container">
+        <div class="chat-list">
+        {% for employee in employees %}
+        
+        <div class="chat-item">
+            {% if employee.employees_photo %}
+            <img src="{{ employee.employees_photo.url }}" alt="Employee Photo" class="chat-item__image">
+            {% else %}
+            <img src="{% static 'img/profile/default.jpg' %}" alt="Default Photo" class="chat-item__image">
+            {% endif %}
+            <a href="{% url 'employee_details' employee.id %}" class="chat-item__details text-center">
+                <div>
+                <p class="chat-item__name">
+                    {{ employee.user.first_name }} {{ employee.user.last_name }}
+                </p>
+                <p class="chat-item__job">{{ employee.employees_job }}</p>
+                </div>
+            </a>
+            
+            
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,39 @@
+body{
+    background-color: #5e6c23;
+}
+
+
+.form-group img{
+    width: 170px;
+    margin-bottom: 46px;
+    margin-top: 29px;
+}
+
+.card{
+    width: 50%;
+    margin: 11rem auto;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.card input{
+    margin-bottom: 10px;
+}
+
+.card button{
+    width: 100%;
+    background-color: #1865b3;
+    color: #fff;
+}
+
+
+@media (max-width: 767px) {
+    .card{
+        width: 90%;
+    }
+}
+
+p{
+    color: red;
+}

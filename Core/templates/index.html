@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <img src="{% static 'img/logo/thycha white-01.png' %}" alt="Your Logo">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="menu-toggle">
+                    <span class="bi bi-list" id="menu-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav text-center ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}"><i class="bi bi-house-door-fill"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'project-list' %}"><i class="bi bi-kanban-fill"></i> Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i> Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i> Timesheets</a>
+                        </li>
+                    </ul>
+        
+                    <!-- New ul element -->
+                    <ul class="navbar-nav text-center ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}" onclick="return confirm('Do you want to logout this page ?')"><i class="bi bi-power"></i></a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="welcome-text">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</div>
+
+        <div class="dashes">
+            <div class="row">
+                <div class="col-md employee-count">
+                    <div class="d-flex align-items-center bg">
+                        <div class="col-auto">
+                            <img src="{% static 'img/index/people2.jpeg' %}" alt="" class="img-fluid">
+                        </div>
+                        <div class="col text-center">
+                            <h3>Total Members</h3>
+                            <p>{{ employees_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md project-count">
+                    <div class="d-flex align-items-center bg">
+                        <div class="col-auto">
+                            <img src="{% static 'img/index/project.jpeg' %}" alt="" class="img-fluid">
+                        </div>
+                        <div class="col text-center">
+                            <h3>Total Project</h2>
+                            <p>{{ project_count }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% else %}
+    <nav>
+        <ul>
+          <li><a href="{% url 'index' %}" class="active"><i class="bi bi-house-fill"></i></a></li>
+          <li><a href="{% url 'timesheet-list' %}"><i class="bi bi-alarm-fill"></i></a></li>
+          <li><a href="{% url 'employee-list' %}"><i class="bi bi-people-fill"></i></a></li>
+          <li><a href="{% url 'profile' %}"><i class="bi bi-person-circle"></i></a></li>
+        </ul>
+    </nav>
+    <header>
+        <img src="{% static 'img/logo/thycha-01.png' %}" alt="Your Logo">
+    </header>
+
+    <div class="centered-container">
+        <div class="employee-card">
+            <img class="card-image" src="{% static 'img/index/clock2.png' %}" alt="Your Logo">
+            <div class="card-content">
+                <h3>Today Worked Time</h3>
+                <p>{{ total_duration }}</p>
+            </div>
+        </div>
+    </div>
+    
+
+    {% endif %}
+
+    
+
+{% endblock content %}

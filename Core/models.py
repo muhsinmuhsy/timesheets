@@ -13,10 +13,17 @@ class Projects(models.Model):
 
 
 class Employees(models.Model):
+    JOB = (
+        ('Graphic Designer', 'Graphic Designer'),
+        ('Content Writer', 'Content Writer'),
+        ('Digital Marketing', 'Digital Marketing'),
+        ('Coordinator', 'Coordinator'),
+        ('Intern', 'Intern')
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     employees_photo = models.ImageField(upload_to='employees_photo')
     employees_number = models.CharField(max_length=20)
-    employees_job = models.CharField(max_length=100)
+    employees_job = models.CharField(max_length=100, choices=JOB)
     employees_address = models.CharField(max_length=20)
     employee_email= models.EmailField()
 

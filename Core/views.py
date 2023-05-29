@@ -259,10 +259,10 @@ def timesheet_list(request):
             end_datetime = datetime.combine(datetime.now().date(), timesheet.end_time)
             duration = end_datetime - start_datetime  # Calculate the duration as a timedelta object
 
-            # Convert the timedelta to string format
-            hours, remainder = divmod(duration.total_seconds(), 3600)
-            minutes, seconds = divmod(remainder, 60)
-            timesheet.duration = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
+            # Convert the timedelta to minutes
+            total_minutes = int(duration.total_seconds() / 60)
+            timesheet.duration = f"{total_minutes:02d}"
+
 
 
         if 'export' in request.GET:
@@ -379,8 +379,6 @@ def timesheet_list(request):
 
 
 
-
-
 @login_required  # Only logged-in employees can access these views
 def create_timesheet(request):
     if request.method == 'POST':
@@ -445,18 +443,38 @@ def update_timesheet_status(request, pk):
         return redirect('timesheet-list')
     
     # Calculate duration for the timesheet
+    # timesheet_obj = TimeSheet.objects.get(pk=pk)
+    # start_datetime = datetime.combine(datetime.now().date(), timesheet_obj.start_time)
+    # end_datetime = datetime.combine(datetime.now().date(), timesheet_obj.end_time)
+    # duration = end_datetime - start_datetime  # Calculate the duration as a timedelta object
+
+    # # Convert the timedelta to string format
+    # hours, remainder = divmod(duration.total_seconds(), 3600)
+    # minutes, seconds = divmod(remainder, 60)
+    # duration_str = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
+    
     timesheet_obj = TimeSheet.objects.get(pk=pk)
     start_datetime = datetime.combine(datetime.now().date(), timesheet_obj.start_time)
     end_datetime = datetime.combine(datetime.now().date(), timesheet_obj.end_time)
     duration = end_datetime - start_datetime  # Calculate the duration as a timedelta object
 
-    # Convert the timedelta to string format
-    hours, remainder = divmod(duration.total_seconds(), 3600)
-    minutes, seconds = divmod(remainder, 60)
-    duration_str = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
-    
+    # Convert the timedelta to total minutes
+    total_minutes = duration.total_seconds() // 60
+    duration_str = f"{int(total_minutes):02d}"
+
     # Render the update timesheet status form
     return render(request, 'update_timesheet_status.html', {'timesheet': timesheet_obj, 'duration': duration_str})
+
+
+
+def delete_timesheet(request, pk):
+    timesheet = TimeSheet.objects.get(pk=pk)
+    timesheet.delete()
+    return redirect('timesheet-list')
+
+
+
+
 
 
 # -------------------------- profile ----------------------------- #
@@ -473,27 +491,27 @@ def profileedit(request, pk):
     user = employee.user
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        # username = request.POST.get('username')
         password = request.POST.get('password')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        employees_photo = request.FILES.get('employees_photo')
-        employees_job = request.POST.get('employees_job')
+        
+        
         employees_number = request.POST.get('employees_number')
         employees_address = request.POST.get('employees_address')
         employee_email = request.POST.get('employee_email')
 
         # Update the User object
-        user.username = username
-        if password:
-            user.set_password(password)
+        # user.username = username
+        # if password:
+        #     user.set_password(password)
         user.first_name = first_name
         user.last_name = last_name
         user.save()
 
         # Update the Employees object
-        employee.employees_photo = employees_photo
-        employee.employees_job = employees_job
+        
+       
         employee.employees_number = employees_number
         employee.employees_address = employees_address
         employee.employee_email = employee_email

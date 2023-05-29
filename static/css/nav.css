@@ -9,7 +9,7 @@
         width: 200px;
         padding-left: 15px;
         overflow-y: auto;
-        background-color: rgba(17, 71, 128, 0.71);
+        background-color: #5e6c23;
         animation: slideInRight 0.5s forwards;
     }
     

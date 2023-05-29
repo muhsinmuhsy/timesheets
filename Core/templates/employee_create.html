@@ -66,7 +66,15 @@
        
         <input type="file" id="employees_photo" name="employees_photo" class="form-control">
 
-        <input type="text" id="employees_job" name="employees_job" placeholder="job" class="form-control">
+
+        <select name="employees_job" id="employees_job">
+            <option value="Graphic Designer" {% if timesheet.employees_job == 'Graphic Designer' %}selected{% endif %}>Graphic Designer</option>
+            <option value="Digital Marketing" {% if timesheet.employees_job == 'Digital Marketing' %}selected{% endif %}>Digital Marketing</option>
+            <option value="Content Writer" {% if timesheet.employees_job == 'Content Writer' %}selected{% endif %}>Content Writer</option>
+            <option value="Coordinator" {% if timesheet.employees_job == 'Coordinator' %}selected{% endif %}>Coordinator</option>
+            <option value="Intern" {% if timesheet.employees_job == 'Intern' %}selected{% endif %}>Intern</option>
+            
+        </select>
         
         
         <input type="text" id="employees_number" name="employees_number" placeholder="Mobile Number" class="form-control">

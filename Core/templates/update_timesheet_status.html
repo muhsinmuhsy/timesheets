@@ -2,48 +2,59 @@
 {% load static %}
 {% block content %}
     <style>
+        
+
+
         .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
+            /* width: 300px;
+            margin: 20px; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25vh; /* Adjust as needed */
         }
+    
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        select, input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-        
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: #fff;
+    
+        .status-buttons button {
             border: none;
+            background-color: #f2f2f2;
+            color: #333;
+            padding: 10px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            padding: 10px;
+            margin-right: 5px;
+            border-radius: 5px;
+        }
+    
+        .status-buttons button.active {
+            background-color: #428bca;
+            color: #fff;
+        }
+    
+        .status-buttons button:hover {
+            background-color: #ddd;
+        }
+    
+        .status-buttons button:active {
+            transform: translateY(1px);
+        }
+    
+        input[type="submit"] {
+            border: none;
+            background-color: #428bca;
+            color: #fff;
+            /* padding: 10px 15px; */
             cursor: pointer;
         }
-        
+    
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #3071a9;
         }
-        
-        @media only screen and (max-width: 600px) {
-            .form-container {
-                max-width: 100%;
-                padding: 10px;
-            }
-            
-            select, input[type="submit"] {
-                padding: 8px;
-            }
+    
+        input[type="submit"]:active {
+            transform: translateY(1px);
         }
     </style>
 </head>
@@ -89,16 +100,16 @@
         <table class="table">
             <thead>
                 <tr class="text-center">
-                    <th scope="col" class="table-primary text-nowrap">Member Name</th>
+                    <th scope="col" class="table-secondary text-nowrap">Member Name</th>
                     <th scope="col" class="table-secondary text-nowrap">Date</th>
-                    <th scope="col" class="table-success text-nowrap">Project</th>
-                    <th scope="col" class="table-dark text-nowrap">Time</th>
-                    <th scope="col" class="table-danger text-nowrap">Location</th>
-                    <th scope="col" class="table-warning text-nowrap">type</th>
-                    <th scope="col" class="table-info text-nowrap">type2</th>
-                    <th scope="col" class="table-light text-nowrap">Description</th>
-                    <th scope="col" class="table-dark text-nowrap">Durection</th>
-                    <th scope="col" class="table-warning text-nowrap">status</th>
+                    <th scope="col" class="table-secondary text-nowrap">Project</th>
+                    <th scope="col" class="table-secondary text-nowrap">Time</th>
+                    <th scope="col" class="table-secondary text-nowrap">Location</th>
+                    <th scope="col" class="table-secondary text-nowrap">type</th>
+                    <th scope="col" class="table-secondary text-nowrap">type2</th>
+                    <th scope="col" class="table-secondary text-nowrap">Description</th>
+                    <th scope="col" class="table-secondary text-nowrap">Durection</th>
+                    <th scope="col" class="table-secondary text-nowrap">status</th>
                     
 
                 </tr>
@@ -106,16 +117,16 @@
             <tbody>
                 
                     <tr class="text-center">
-                        <td  class="table-primary text-nowrap">{{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }}</td>
                         <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
-                        <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
-                        <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
-                        <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
-                        <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
-                        <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.project }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.location}}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.type }}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.type2 }}</td>
                         <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
-                        <td  class="table-dark text-nowrap">{{ duration }} hrs</td>
-                        <td  class="table-warning text-nowrap">{{ timesheet.status }}</td>
+                        <td  class="table-secondary text-nowrap">{{ duration }} minuts</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.status }}</td>
                         
                     </tr>
                
@@ -127,16 +138,16 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="status">Status:</label>
-                <select name="status" id="status">
-                    <option value="Pending" {% if timesheet.status == 'Pending' %}selected{% endif %}>Pending</option>
-                    <option value="Rejected" {% if timesheet.status == 'Rejected' %}selected{% endif %}>Rejected</option>
-                    <option value="Approved" {% if timesheet.status == 'Approved' %}selected{% endif %}>Approved</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Submit">
+                <label>Status:</label>
+                <div class="status-buttons">
+                    <button type="submit" name="status" value="Pending" {% if timesheet.status == 'Pending' %}class="active"{% endif %}>Pending</button>
+                    <button type="submit" name="status" value="Rejected" {% if timesheet.status == 'Rejected' %}class="active"{% endif %}>Rejected</button>
+                    <button type="submit" name="status" value="Approved" {% if timesheet.status == 'Approved' %}class="active"{% endif %}>Approved</button>
+                </div>
             </div>
         </form>
     </div>
+
+    
+    
 {% endblock content%}

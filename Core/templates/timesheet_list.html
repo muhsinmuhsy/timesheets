@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style>
+    .container{
+        max-width: 555px;
+    margin: 0 auto;
+    }
+</style>
 {% if request.user.is_superuser %}
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
@@ -42,81 +48,95 @@
     <h1 class="text-center qq">Timesheets</h1>
     <!-- select form -->
     <div class="timesheet_list-form">
-        <form method="GET">
-            <label for="employee">Select Employee:</label>
-        <select name="employee" id="employee">
-            <option value="">All</option>
-            {% for emp in employees %}
-                <option value="{{ emp.user.id }}" {% if request.GET.employee|stringformat:"s" == emp.user.id|stringformat:"s" %}selected{% endif %}>{{ emp.user.first_name }} {{ emp.user.last_name }}</option>
-            {% endfor %}
-        </select>
-            <br>
-            <label for="project">Project:</label>
-        <select name="project" id="project">
-            <option value="">All</option>
-            {% for proj in projects %}
-                <option value="{{ proj.id }}" {% if request.GET.project|stringformat:"s" == proj.id|stringformat:"s" %}selected{% endif %}>{{ proj.project_name }}</option>
-            {% endfor %}
-        </select>
-            <br>
-            <div>
-                <label for="status">Status:</label>
-                <select name="status" id="status">
-                    <option value="">All</option>
-                    <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
-                    <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
-                    <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
-                </select>
-            </div>
-            <br>
-            <label for="start_date">Start Date:</label>
-            <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
-            <br>
-            <label for="end_date">End Date:</label>
-            <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
-            <br>
-            <div class="filter">
-            <input type="submit" value="Filter" >
-            </div>
-            <div class="excel">
-                <input type="submit" name="export" value="Export to Excel" onclick="return confirm('Do you Want to Download this sheet as Excel ?')">
-            </div>
-            
-        </form>
+        
+        <!------------------------------------------------------------->
+
+
+        <div class="container text-center">
+            <form method="GET">
+                <div class="row">
+                    <div class="col">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+                    </div>
+                    <div class="col">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col">
+                        <label for="employee">Select Employee:</label>
+                        <select name="employee" id="employee">
+                            <option value="">All</option>
+                            {% for emp in employees %}
+                                <option value="{{ emp.user.id }}" {% if request.GET.employee|stringformat:"s" == emp.user.id|stringformat:"s" %}selected{% endif %}>{{ emp.user.first_name }} {{ emp.user.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="project">Project:</label>
+                        <select name="project" id="project">
+                            <option value="">All</option>
+                            {% for proj in projects %}
+                                <option value="{{ proj.id }}" {% if request.GET.project|stringformat:"s" == proj.id|stringformat:"s" %}selected{% endif %}>{{ proj.project_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="status">Status:</label>
+                        <select name="status" id="status">
+                            <option value="">All</option>
+                            <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter">
+                <input type="submit" value="Filter" >
+                </div>
+                <div class="excel">
+                    <input type="submit" name="export" value="Export to Excel" onclick="return confirm('Do you Want to Download this sheet as Excel ?')">
+                </div>
+
+            </form>
+        </div>
+
     </div>
     <!-- lists -->
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr class="text-center">
-                    <th scope="col" class="table-primary text-nowrap">Member Name</th>
+                    <th scope="col" class="table-secondary text-nowrap">Member Name</th>
                     <th scope="col" class="table-secondary text-nowrap">Date</th>
-                    <th scope="col" class="table-success text-nowrap">Project</th>
-                    <th scope="col" class="table-dark text-nowrap">Time</th>
-                    <th scope="col" class="table-light text-nowrap">Location</th>
-                    <th scope="col" class="table-warning text-nowrap">type</th>
-                    <th scope="col" class="table-info text-nowrap">type2</th>
-                    <th scope="col" class="table-light text-nowrap">Description</th>
-                    <th scope="col" class="table-dark text-nowrap">Durection</th>
-                    <th scope="col" class="table-warning text-nowrap">status</th>
-                    <th scope="col" class="table-danger text-nowrap">Action</th>
+                    <th scope="col" class="table-secondary text-nowrap">Project</th>
+                    <th scope="col" class="table-secondary text-nowrap">Time</th>
+                    <th scope="col" class="table-secondary text-nowrap">Location</th>
+                    <th scope="col" class="table-secondary text-nowrap">type</th>
+                    <th scope="col" class="table-secondary text-nowrap">type2</th>
+                    <th scope="col" class="table-secondary text-nowrap">Description</th>
+                    <th scope="col" class="table-secondary text-nowrap">Durection</th>
+                    <th scope="col" class="table-secondary text-nowrap">status</th>
+                    <th scope="col" class="table-secondary text-nowrap">Action</th>
 
                 </tr>
             </thead>
             <tbody>
                 {% for timesheet in timesheets %}
                     <tr class="text-center">
-                        <td  class="table-primary text-nowrap">{{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.employee.first_name }} {{ timesheet.employee.last_name }}</td>
                         <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
-                        <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
-                        <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
-                        <td  class="table-light text-nowrap">{{timesheet.location}}</td>
-                        <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
-                        <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.project }}</td>
+                        <td class="table-secondary text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.location}}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.type }}</td>
+                        <td  class="table-secondary text-nowrap">{{timesheet.type2 }}</td>
                         <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
-                        <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
-                        <td  class="table-warning text-nowrap">{{ timesheet.status }}</td>
-                        <td  class="table-danger text-nowrap">
+                        <td  class="table-secondary text-nowrap">{{ timesheet.duration }} minuts</td>
+                        <td  class="table-secondary text-nowrap">{{ timesheet.status }}</td>
+                        <td  class="table-secondary text-nowrap">
                             <a href="{% url 'update-timesheet-status' timesheet.pk %}" style="text-decoration: none; ">Update Status</a>
                         </td>
                     </tr>
@@ -176,33 +196,29 @@
                         <thead>
                             <tr class="text-center">
                                
-                                <th scope="col" class="table-primary text-nowrap">Date</th>
-                                <th scope="col" class="table-success text-nowrap">Project</th>
-                                <th scope="col" class="table-dark text-nowrap">Time</th>
-                                <th scope="col" class="table-danger text-nowrap">Location</th>
-                                <th scope="col" class="table-warning text-nowrap">type</th>
-                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Date</th>
+                                <th scope="col" class="table-secondary text-nowrap">Project</th>
+                                <th scope="col" class="table-secondary text-nowrap">Time</th>
+                                <th scope="col" class="table-secondary text-nowrap">Location</th>
+                                <th scope="col" class="table-secondary text-nowrap">type</th>
+                                <th scope="col" class="table-secondary text-nowrap">type2</th>
                                 <th scope="col" class="table-secondary text-nowrap">Description</th>
-                                <th scope="col" class="table-dark text-nowrap">Durection</th>
-                               
-                                
-            
+                                <th scope="col" class="table-secondary text-nowrap">Durection</th>            
                             </tr>
                         </thead>
                         <tbody>
                             {% for timesheet in approved_timesheets %}
                                 <tr class="text-center">
                                     
-                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
-                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
-                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
-                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
-                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
-                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-secondary text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type2 }}</td>
                                     <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
-                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.duration }} hrs</td>
                                     {{ timesheet.status }}
-                                   
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -228,15 +244,15 @@
                         <thead>
                             <tr class="text-center">
                                 
-                                <th scope="col" class="table-primary text-nowrap">Date</th>
-                                <th scope="col" class="table-success text-nowrap">Project</th>
-                                <th scope="col" class="table-dark text-nowrap">Time</th>
-                                <th scope="col" class="table-danger text-nowrap">Location</th>
-                                <th scope="col" class="table-warning text-nowrap">type</th>
-                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Date</th>
+                                <th scope="col" class="table-secondary text-nowrap">Project</th>
+                                <th scope="col" class="table-secondary text-nowrap">Time</th>
+                                <th scope="col" class="table-secondary text-nowrap">Location</th>
+                                <th scope="col" class="table-secondary text-nowrap">type</th>
+                                <th scope="col" class="table-secondary text-nowrap">type2</th>
                                 <th scope="col" class="table-secondary text-nowrap">Description</th>
-                                <th scope="col" class="table-dark text-nowrap">Durection</th>
-                               
+                                <th scope="col" class="table-secondary text-nowrap">Durection</th>
+                                <th scope="col" class="table-secondary text-nowrap">Action</th>
                                 
             
                             </tr>
@@ -245,14 +261,20 @@
                             {% for timesheet in pending_timesheets %}
                                 <tr class="text-center">
                                     
-                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
-                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
-                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
-                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
-                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
-                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-secondary text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type2 }}</td>
                                     <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
-                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    <td class="table-secondary text-nowrap">
+                                        <a href="{% url 'delete-timesheet' timesheet.pk %}" 
+                                        onclick="return confirm('Do you want to logout this page?')">
+                                            <i class="bi bi-trash-fill" style="color: red;"></i>
+                                        </a>
+                                    </td>
                                     {{ timesheet.status }}
                                    
                                 </tr>
@@ -281,14 +303,14 @@
                         <thead>
                             <tr class="text-center">
                                
-                                <th scope="col" class="table-primary text-nowrap">Date</th>
-                                <th scope="col" class="table-success text-nowrap">Project</th>
-                                <th scope="col" class="table-dark text-nowrap">Time</th>
-                                <th scope="col" class="table-danger text-nowrap">Location</th>
-                                <th scope="col" class="table-warning text-nowrap">type</th>
-                                <th scope="col" class="table-info text-nowrap">type2</th>
+                                <th scope="col" class="table-secondary text-nowrap">Date</th>
+                                <th scope="col" class="table-secondary text-nowrap">Project</th>
+                                <th scope="col" class="table-secondary text-nowrap">Time</th>
+                                <th scope="col" class="table-secondary text-nowrap">Location</th>
+                                <th scope="col" class="table-secondary text-nowrap">type</th>
+                                <th scope="col" class="table-secondary text-nowrap">type2</th>
                                 <th scope="col" class="table-secondary text-nowrap">Description</th>
-                                <th scope="col" class="table-dark text-nowrap">Durection</th>
+                                <th scope="col" class="table-secondary text-nowrap">Durection</th>
                                
                                 
             
@@ -298,14 +320,14 @@
                             {% for timesheet in rejected_timesheets %}
                                 <tr class="text-center">
                                     
-                                    <td  class="table-primary text-nowrap">{{ timesheet.date }}</td>
-                                    <td  class="table-success text-nowrap">{{ timesheet.project }}</td>
-                                    <td class="table-dark text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
-                                    <td  class="table-danger text-nowrap">{{timesheet.location}}</td>
-                                    <td  class="table-warning text-nowrap">{{timesheet.type }}</td>
-                                    <td  class="table-info text-nowrap">{{timesheet.type2 }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.date }}</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.project }}</td>
+                                    <td class="table-secondary text-nowrap">{{ timesheet.start_time }} to {{ timesheet.end_time }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.location}}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type }}</td>
+                                    <td  class="table-secondary text-nowrap">{{timesheet.type2 }}</td>
                                     <td  class="table-secondary text-nowrap">{{timesheet.description}} </td>
-                                    <td  class="table-dark text-nowrap">{{ timesheet.duration }} hrs</td>
+                                    <td  class="table-secondary text-nowrap">{{ timesheet.duration }} hrs</td>
                                     {{ timesheet.status }}
                                    
                                 </tr>

@@ -26,6 +26,7 @@ urlpatterns=[
     path('timesheet/create/', views.create_timesheet, name='create-timesheet'),
     path('timesheet/list/', views.timesheet_list, name='timesheet-list'),
     path('timesheet/<int:pk>/update/', views.update_timesheet_status, name='update-timesheet-status'),
+    path('timesheet_delete/<int:pk>/', views.delete_timesheet, name= 'delete-timesheet'),
 
     # --------------------------------- Profile -----------------------------------------#
 

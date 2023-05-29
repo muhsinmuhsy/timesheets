@@ -11,7 +11,7 @@ def login_view(request):
             login(request, user)
             return redirect('index')
         else:
-            error = 'Invalid credentials. Please try again.'
+            error = 'User Name or Password Incorrect.'
     else:
         error = None
     return render(request, 'login.html', {'error': error})
